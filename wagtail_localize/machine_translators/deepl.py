@@ -28,9 +28,13 @@ class DeepLTranslator(BaseMachineTranslator):
             return "https://api-free.deepl.com/v2/translate"
         return "https://api.deepl.com/v2/translate"
 
+    def get_headers(self):
+        return {
+            "Authorization": f"DeepL-Auth-Key {self.options['AUTH_KEY']}",
+        }
+
     def translate(self, source_locale, target_locale, strings):
         parameters = {
-            "auth_key": self.options["AUTH_KEY"],
             "text": [string.data for string in strings],
             "tag_handling": "xml",
             "source_lang": language_code(source_locale.language_code),
@@ -49,6 +53,7 @@ class DeepLTranslator(BaseMachineTranslator):
             self.get_api_endpoint(),
             parameters,
             timeout=30,
+            headers=self.get_headers(),
         )
 
         return {
