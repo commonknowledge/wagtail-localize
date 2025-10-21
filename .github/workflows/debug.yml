@@ -1,7 +1,0 @@
-name: Debug
-on: [push]
-jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Test"
