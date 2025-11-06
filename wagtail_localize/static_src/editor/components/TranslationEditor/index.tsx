@@ -194,16 +194,20 @@ export interface EditorProps {
 const TranslationEditor: FunctionComponent<EditorProps> = (props) => {
     // Convert initialStringTranslations into a Map that maps segment ID to translation info
     const stringTranslations: Map<number, StringTranslation> = new Map();
+    const initialSegments = props.segments
     props.initialStringTranslations.forEach((translation) => {
-        stringTranslations.set(translation.segment_id, {
-            value: translation.data,
-            isSaving: false,
-            isErrored: !!translation.error,
-            comment: translation.error
-                ? translation.error
-                : translation.comment,
-            translatedBy: translation.last_translated_by,
-        });
+        const segment = initialSegments.find(s => s.id === translation.segment_id)
+        if (segment) {
+            stringTranslations.set(translation.segment_id, {
+                value: translation.data,
+                isSaving: false,
+                isErrored: !!translation.error,
+                comment: translation.error
+                    ? translation.error
+                    : translation.comment,
+                translatedBy: translation.last_translated_by,
+            });
+        }
     });
 
     // Same with initialSegmentOverrides
